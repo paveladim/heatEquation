@@ -26,10 +26,12 @@ def g(x, t):
 
 def solveLayer(j, x, t, solMatr, h, tau, M, N):
     if (j == 0):
-        for i in range(0, N + 1):
+        for i in range(0, N):
             solMatr[j][i] = phi(x, t)
             x += h
 
+        x = 1
+        solMatr[j][N] = phi(x, t)
         x = 0
         t += tau
         return x, t
@@ -46,6 +48,7 @@ def solveLayer(j, x, t, solMatr, h, tau, M, N):
         solMatr[j][i] = value;
         x += h
 
+    x = 1
     solMatr[j][N] = mu2(x, t)
     x = 0
     t += tau
@@ -64,6 +67,7 @@ class Example(QMainWindow, interface.Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
         self.setWindowTitle("Задание 10. Петров Павел, гр. 381803-1, команда 1.")
+        self.setWindowIcon(QIcon('fox.png'))
         self.buildSolution.clicked.connect(self.buttonClicked)
 
     def buttonClicked(self):
@@ -151,7 +155,8 @@ class Example(QMainWindow, interface.Ui_MainWindow):
         ax.set_xlabel('Сечение стержня x')
         ax.set_ylabel('Время t')
         ax.set_zlabel('Температура стержня u(x,t)')
-        ax.set_title('Изменение температуры стержня с течением времени')
+        temp = "Изменение температуры стержня с течением времени с параметрами n = " + str(N) + ", m = " + str(M) + " и T = " + str(T)
+        ax.set_title(temp)
 
         fig.canvas.set_window_title('Визуализация решения')
         fig.show()
